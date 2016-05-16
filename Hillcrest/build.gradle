@@ -8,7 +8,6 @@
  */
 
 
-/*
  buildscript {
     repositories {
         mavenCentral()
@@ -17,7 +16,6 @@
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
     }
 }
-*/
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
@@ -25,15 +23,20 @@ apply plugin: 'java'
 // Apply Eclipse Project plugin
 apply plugin: 'eclipse'
 
-/*
+//Apply Srping boot plugin
+apply plugin: 'spring-boot'
+
+
+
 jar {
-	baseName = 'gs-accessing-data-jpa'
+	baseName = 'hillcrest-accessing-data-jpa'
 	version =  '0.1.0'
-    
+/*    
 	baseName = 'gs-actuator-service'
 	version =  '0.1.0'
-}
 */
+}
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -46,11 +49,19 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.13'
+    // Diabled due to hard to use
+    //YML Properties
+    //compile("org.yaml:snakeyaml:1.13")
+    
+    
     // Spring Boot
     compile("org.springframework.boot:spring-boot-starter-web:1.3.3.RELEASE")
     //compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-security:1.3.3.RELEASE")
     //compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.thymeleaf:thymeleaf-spring4:2.1.2.RELEASE")
+    
+    
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the

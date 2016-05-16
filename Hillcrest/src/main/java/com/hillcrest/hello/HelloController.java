@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,21 +23,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.hillcrest.objects.NurcingRoom;
 
-import com.hillcrest.objects.utils.*;
-
-@ClassPreamble(author = "Jusitn Ma", date = "3/17/2016", currentRevision = 6, lastModified = "4/12/016", lastModifiedBy = "Justin Ma"
-
-)
-
 @Controller
-@EnableAutoConfiguration
 public class HelloController {
+
 	@RequestMapping(value = "/toys", method = RequestMethod.GET)
 	@ResponseBody
 	String toys() throws JsonParseException, IOException {
 
 		String tempString = "";
-
+		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String userName = userDetails.getUsername();
+		tempString = tempString  + "User:" + userName;
+		
+		
 		NurcingRoom nr = new NurcingRoom("this", "that", "Address", "phone Number", 0, 0);
 
 		Map<String, NurcingRoom> nrDataMap = new HashMap<String, NurcingRoom>();
@@ -68,24 +72,16 @@ public class HelloController {
 		return tempString;
 
 	}
-	
-	//get Near By Toys Locations
-	@RequestMapping(value = "/toys", method = RequestMethod.GET, params = {"latitude","longitude"})
+
+	// get Near By Toys Locations
+	@RequestMapping(value = "/toys", method = RequestMethod.GET, params = { "latitude", "longitude" })
 	@ResponseBody
-	String getNearbyToys(
-			@RequestParam(value = "latitude") double lat,
-			@RequestParam(value = "longitude") double longi)
-	{
-
-		
+	String getNearbyToys(@RequestParam(value = "latitude") double lat,
+			@RequestParam(value = "longitude") double longi) {
 		String tempString1 = "this is only sample nothing returned: lat:" + lat;
-		
-		return tempString1;
-		
-	}
-	
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(HelloController.class, args);
+		return tempString1;
+
 	}
+
 }
